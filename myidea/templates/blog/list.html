@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Back Office</title>
+</head>
+<body>
+    {% if tag %}
+    Tag Page: {{ tag.name }}
+    {% endif %}
+    {% if category %}
+    Category Page: {{ category.name }}
+    {% endif %}
+    <ul>
+        {% for post in post_list %}
+        <li>
+            <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
+            <div>
+                <span>Author:{{ post.owner.username }}</span>
+                <span>Category:{{ post.category.name }}</span>
+            </div>
+            <p>{{ post.desc }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
