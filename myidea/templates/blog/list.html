@@ -5,6 +5,12 @@
     <title>Blog Back Office</title>
 </head>
 <body>
+    <div>Top Categories:
+        {% for cate in navs %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+    <hr/>
     {% if tag %}
     Tag Page: {{ tag.name }}
     {% endif %}
@@ -23,5 +29,17 @@
         </li>
         {% endfor %}
     </ul>
+    <hr/>
+    <div>Bottom Categories:
+        {% for cate in categories %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+    <div>
+        {% for sidebar in sidebars %}
+            <h4>{{ sidebar.title }}</h4>
+            {{ sidebar.content }}
+        {% endfor %}
+    </div>
 </body>
 </html>
