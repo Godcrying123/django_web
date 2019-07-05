@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>detail</title>
-</head>
-<body>
-    <div>Top Categories:
-        {% for cate in navs %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
-    <hr/>
+{% extends "./base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block main %}
     {% if post %}
     <h1>{{ post.title }}</h1>
     <div>
@@ -22,17 +14,4 @@
         {{ post.content }}
     </p>
     {% endif %}
-    <hr/>
-    <div>Bottom Categories:
-        {% for cate in categories %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
-    <div>
-        {% for sidebar in sidebars %}
-            <h4>{{ sidebar.title }}</h4>
-            {{ sidebar.content }}
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% endblock %}

@@ -62,7 +62,6 @@ class SideBar(models.Model):
         from blog.models import Post
         from comment.models import Comment
 
-
         result = ''
         if self.display_type == self.DISPLAY_HTML:
             result = self.content

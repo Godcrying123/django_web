@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog Back Office</title>
-</head>
-<body>
-    <div>Top Categories:
-        {% for cate in navs %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
-    <hr/>
+{% extends "./base.html" %}
+
+{% block title %}
     {% if tag %}
     Tag Page: {{ tag.name }}
     {% endif %}
     {% if category %}
     Category Page: {{ category.name }}
     {% endif %}
+{% endblock %}
+
+{% block main %}
     <ul>
         {% for post in post_list %}
         <li>
-            <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
+            <a href="{% url 'post-details' post.id %}">{{ post.title }}</a>
             <div>
                 <span>Author:{{ post.owner.username }}</span>
                 <span>Category:{{ post.category.name }}</span>
@@ -28,18 +21,13 @@
             <p>{{ post.desc }}</p>
         </li>
         {% endfor %}
+        {% if page_obj %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous page</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next page</a>
+            {% endif %}
+        {% endif %}
     </ul>
-    <hr/>
-    <div>Bottom Categories:
-        {% for cate in categories %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
-    <div>
-        {% for sidebar in sidebars %}
-            <h4>{{ sidebar.title }}</h4>
-            {{ sidebar.content }}
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% endblock %}
