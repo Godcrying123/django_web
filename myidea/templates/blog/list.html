@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Back Office</title>
+</head>
+<body>
+    <div>Top Categories:
+        {% for cate in navs %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+    <hr/>
+    {% if tag %}
+    Tag Page: {{ tag.name }}
+    {% endif %}
+    {% if category %}
+    Category Page: {{ category.name }}
+    {% endif %}
+    <ul>
+        {% for post in post_list %}
+        <li>
+            <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
+            <div>
+                <span>Author:{{ post.owner.username }}</span>
+                <span>Category:{{ post.category.name }}</span>
+            </div>
+            <p>{{ post.desc }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <hr/>
+    <div>Bottom Categories:
+        {% for cate in categories %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+    <div>
+        {% for sidebar in sidebars %}
+            <h4>{{ sidebar.title }}</h4>
+            {{ sidebar.content }}
+        {% endfor %}
+    </div>
+</body>
+</html>
