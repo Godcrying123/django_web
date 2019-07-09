@@ -11,7 +11,7 @@ class Comment(models.Model):
         {STATUS_NORMAL, 'normal'},
         {STATUS_DELETE, 'delete'},
     )
-    target = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='comment target')
+    target = models.CharField(max_length=100, verbose_name="comment target")
     content = models.CharField(max_length=2000, verbose_name='content')
     nickname = models.CharField(max_length=50, verbose_name='nickname')
     website = models.URLField(verbose_name='website')
@@ -21,3 +21,7 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = 'comment'
+
+    @classmethod
+    def get_by_target(cls, target):
+        return cls.objects.filter(target=target, status=cls.STATUS_NORMAL)

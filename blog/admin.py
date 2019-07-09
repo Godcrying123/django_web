@@ -95,7 +95,7 @@ class PostAdmin(BaseOwnerAdmin):
             ),
         }),
         ('extra info', {
-            'classes': ('collapse', ),
+            'classes': ('collapse',),
             'fields': ('tag',),
         }),
     )

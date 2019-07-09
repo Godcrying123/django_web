@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import mistune
 
 # Create your models here.
 
@@ -74,6 +75,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name='title')
     desc = models.CharField(max_length=1024, blank=True, verbose_name='descriptions')
     content = models.TextField(verbose_name='content', help_text='the post must be MarkDown format')
+    content_html = models.TextField(verbose_name='content html code', blank=True, editable=False)
     status = models.PositiveIntegerField(default=STATUS_NORMAL, choices=STATUS_ITEMS, verbose_name='status')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='category')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='tag')
@@ -81,6 +83,7 @@ class Post(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='created time')
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
+
 
     class Meta:
         verbose_name = verbose_name_plural = 'post'
@@ -120,3 +123,7 @@ class Post(models.Model):
     @classmethod
     def hot_posts(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)

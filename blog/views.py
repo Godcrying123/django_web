@@ -6,6 +6,8 @@ from django.shortcuts import get_object_or_404
 
 from .models import Post, Tag, Category
 from config.models import SideBar, Link
+from comment.forms import CommentForm
+from comment.models import Comment
 
 # Create your views here.
 # def post_list(request, category_id=None, tag_id=None):
@@ -51,6 +53,12 @@ class CommonViewMixin:
         return context
 
 
+class LinkListView(CommonViewMixin,ListView):
+    queryset = Link.objects.filter(status=Link.STATUS_NORMAL)
+    template_name = 'config/links.html'
+    context_object_name = 'link_list'
+
+
 class IndexView(CommonViewMixin, ListView):
     queryset = Post.latest_posts()
     paginate_by = 5
@@ -79,6 +87,7 @@ class SearchView(IndexView):
         if not keyword:
             return queryset
         return queryset.filter(Q(title__icontains=keyword)|Q(desc__icontains=keyword))
+
 
 class CategoryView(IndexView):
     def get_context_data(self, **kwargs):
@@ -119,3 +128,12 @@ class PostDetailView(CommonViewMixin, DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context.update({
+    #         'comment_form': CommentForm,
+    #         'comment_list': Comment.get_by_target(self.request.path)
+    #     })
+    #     return context
+
