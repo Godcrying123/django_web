@@ -20,7 +20,7 @@ class PostInline(admin.TabularInline): #different StackedInline Style
 @admin.register(Category, site=custom_site)
 class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline]
-    list_display = ('name', 'status', 'is_nav', 'owner',  'created_time', 'post_count')
+    list_display = ('name', 'status', 'is_nav', 'owner', 'created_time', 'post_count')
     fields = ('name', 'status', 'owner', 'is_nav')
 
     def post_count(self, obj):
@@ -69,7 +69,7 @@ class PostAdmin(BaseOwnerAdmin):
     actions_on_bottom = True
 
     #edit the page
-    save_on_top = True
+    # save_on_top = True
 
     exclude = ('owner',)
 
@@ -95,7 +95,7 @@ class PostAdmin(BaseOwnerAdmin):
             ),
         }),
         ('extra info', {
-            'classes': ('collapse',),
+            # 'classes': ('collapse',),
             'fields': ('tag',),
         }),
     )

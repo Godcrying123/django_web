@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, F
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
@@ -136,4 +136,12 @@ class PostDetailView(CommonViewMixin, DetailView):
     #         'comment_list': Comment.get_by_target(self.request.path)
     #     })
     #     return context
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv=F('uv') + 1)
+
+        #debug
+        from django.db import connection
+        print(connection.queries)
+        return response
 

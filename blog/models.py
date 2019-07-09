@@ -16,7 +16,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='category name')
     status = models.PositiveIntegerField(default=STATUS_NORMAL, choices=STATUS_ITEMS, verbose_name='status')
     is_nav = models.BooleanField(default=False, verbose_name='is nav')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='author',)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='author')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name='created time')
 
     class Meta:
