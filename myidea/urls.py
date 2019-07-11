@@ -18,6 +18,10 @@ from django.conf.urls import url
 from django.contrib.sitemaps import views as sitemap_views
 
 import xadmin
+xadmin.autodiscover()
+
+from xadmin.plugins import xversion
+xversion.register_models()
 
 from blog.views import (
     IndexView, CategoryView, TagView,
@@ -51,6 +55,6 @@ urlpatterns = [
     # url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     # url(r'^rss|feed/', LatestPostFeed(), name='rss'),
     # url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
-    url(r'^super_admin/', xadmin.site.urls, name='super-admin'),
-    # url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    # url(r'^super_admin/', xadmin.site.urls, name='super-admin'),
+    url(r'^admin/', xadmin.site.urls, name='xadmin'),
 ]

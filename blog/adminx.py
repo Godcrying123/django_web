@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import get_permission_codename
 
-from xadmin.layout import Row, Fieldset
+from xadmin.layout import Row, Fieldset, Container
 from xadmin.filters import manager
 from xadmin.filters import RelatedFieldListFilter
 import xadmin
@@ -17,7 +17,12 @@ from myidea.base_admin import BaseOwnerAdmin
 
 
 class PostInline(admin.TabularInline): #different StackedInline Style
-    fields = ('title', 'desc')
+    # fields = ('title', 'desc')
+    form_layout = (
+        Container(
+            Row('title', 'desc'),
+        )
+    )
     extra = 1
     model = Post
 
@@ -150,6 +155,6 @@ class PostAdmin(BaseOwnerAdmin):
         return media
 
 
-@xadmin.sites.register(LogEntry)
-class LogEntryAdmin(admin.ModelAdmin):
-    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
+# @xadmin.sites.register(LogEntry)
+# class LogEntryAdmin(admin.ModelAdmin):
+#     list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
