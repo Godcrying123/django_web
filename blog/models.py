@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.functional import cached_property
+
+
 import mistune
 
 # Create your models here.
@@ -84,7 +87,6 @@ class Post(models.Model):
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
 
-
     class Meta:
         verbose_name = verbose_name_plural = 'post'
         ordering = ['-id']
@@ -101,6 +103,11 @@ class Post(models.Model):
                 .select_related('owner', 'category')
 
         return post_list, tag
+
+    @cached_property
+    def tags(self):
+        return ','.join(self.tag.values_list('name', flat=True))
+        # return ','.join(self.tag.objects.filter(status=Tag.STATUS_NORMAL))
 
     @staticmethod
     def get_by_category(category_id):
