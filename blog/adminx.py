@@ -4,10 +4,10 @@ from django.utils.html import format_html
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth import get_permission_codename
 
+import xadmin
 from xadmin.layout import Row, Fieldset, Container
 from xadmin.filters import manager
 from xadmin.filters import RelatedFieldListFilter
-import xadmin
 
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
@@ -16,7 +16,7 @@ from myidea.base_admin import BaseOwnerAdmin
 # Register your models here.
 
 
-class PostInline(admin.TabularInline): #different StackedInline Style
+class PostInline: #different StackedInline Style
     # fields = ('title', 'desc')
     form_layout = (
         Container(
@@ -25,6 +25,7 @@ class PostInline(admin.TabularInline): #different StackedInline Style
     )
     extra = 1
     model = Post
+
 
 @xadmin.sites.register(Category)
 class CategoryAdmin(BaseOwnerAdmin):
@@ -47,6 +48,13 @@ class TagAdmin(BaseOwnerAdmin):
 class CategoryOwnerFilter(RelatedFieldListFilter):
     """customized filter only shows the current user category"""
 
+    @classmethod
+    def test(cls, field, request, params, model, admin_view, field_path):
+        return field.name == 'category'
+
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        super().__init__(field, request, params, model, model_admin, field_path)
+        self.lookup_choices = Category.objects.filter(owner=request.user).values_list('id', 'name')
     # title = 'category filter'
     # parameter_name = 'owner_category'
     #
@@ -58,13 +66,6 @@ class CategoryOwnerFilter(RelatedFieldListFilter):
     #     if category_id:
     #         return queryset.filter(category_id=self.value())
     #     return queryset
-    @classmethod
-    def test(cls, field, request, params, model, admin_view, field_path):
-        return field.name == 'category'
-
-    def __init__(self, field, request, params, model, model_admin, field_path):
-        super().__init__(field, request, params, model, model_admin, field_path)
-        self.lookup_choices = Category.objects.filter(owner=request).values_list('id', 'name')
 
 
 manager.register(CategoryOwnerFilter, take_priority=True)
@@ -74,7 +75,7 @@ manager.register(CategoryOwnerFilter, take_priority=True)
 
 @xadmin.sites.register(Post)
 class PostAdmin(BaseOwnerAdmin):
-    # form = PostAdminForm
+    form = PostAdminForm
     list_display = [
         'title', 'category', 'status',
         'created_time', 'owner', 'operator'
@@ -140,19 +141,20 @@ class PostAdmin(BaseOwnerAdmin):
         )
     operator.short_description = 'operate'
 
-    # class Media:
-    #     css = {
-    #         'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', ),
-    #     }
-    #     js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
-    @property
-    def media(self):
-        media = super().media
-        media.add_js(['https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js'])
-        media.add_css({
-            'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css',),
-        })
-        return media
+    class Media:
+        css = {
+            'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css', ),
+        }
+        js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
+
+    # @property
+    # def media(self):
+    #     media = super().media
+    #     media.add_js(['https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js'])
+    #     media.add_css({
+    #         'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css',),
+    #     })
+    #     return media
 
 
 # @xadmin.sites.register(LogEntry)

@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'reversion',
+    'dal',
+    'dal_select2',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -111,6 +115,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Xadmin Basic Configurations
+XADMIN_TITLE = 'MyIdea Back Office'
+XADMIN_FOOTER_TITLE = 'Power by jackson.com'
+
+# CKeditor basic configurations
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpaces': 4,
+        'extraPlugins': 'codesnippet',
+    },
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = 'article_images'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
