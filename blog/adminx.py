@@ -103,6 +103,8 @@ class PostAdmin(BaseOwnerAdmin):
         Fieldset(
             'content info',
             'desc',
+            'content_ck',
+            'content_md',
             'content',
         )
     )
