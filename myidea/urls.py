@@ -19,6 +19,9 @@ from django.contrib.sitemaps import views as sitemap_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
+
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 import xadmin
@@ -32,12 +35,16 @@ from blog.views import (
     PostDetailView, SearchView, AuthorView,
     LinkListView
 )
+from blog.apis import PostViewSet, CategoryViewSet
 from config.views import links
 from comment.views import CommentView
 from .custom_site import custom_site
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 
+router = DefaultRouter()
+router.register(r'post', PostViewSet, base_name='api-post')
+router.register(r'category',CategoryViewSet, base_name='api-category')
 
 urlpatterns = [
     # url(r'^$', IndexView.as_view(), name='index'),
@@ -50,6 +57,9 @@ urlpatterns = [
     # url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     # url(r'^rss|feed/', LatestPostFeed(), name='rss'),
     # url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    # url(r'^api/post/', PostList.as_view(), name='post-list'),
+    url(r'^api/', include(router.urls)),
+    url(r'^api/docs/', include_docs_urls(title='myidea apis')),
     url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),
     url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),
     url(r'^$', IndexView.as_view(), name='index'),
