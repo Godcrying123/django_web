@@ -6,7 +6,7 @@ sys.path.append("venv/lib/python3.6/site-packages/")
 
 
 def main():
-    profile = os.environ.get('PROJECT_PROFILE', 'develop')
+    profile = os.environ.get('PROJECT_PROFILE', 'product')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myidea.settings.%s' % profile)
     try:
         from django.core.management import execute_from_command_line
